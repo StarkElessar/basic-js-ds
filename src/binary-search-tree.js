@@ -26,7 +26,7 @@ class BinarySearchTree {
     
     return trueKeys.has('data') && trueKeys.has('left') && trueKeys.has('right')
   }
-  _addElement(node = this.root, data) {
+  _addElement(node, data) {
     if (!node) return new Node(data)
     if (node.data === data) return node
 
@@ -36,17 +36,24 @@ class BinarySearchTree {
         
     return node
   }
+  _hasElementInside(node, data) {
+    if (!node) return false
+    if (node.data === data) return true
+    
+    return data < node.data
+      ? this._hasElementInside(node.left, data)
+      : this._hasElementInside(node.right, data)
+  }
 
   root() {
     return this.root
   }
-
   add(data) {
     this.root = this._addElement(this.root, data)
   }
 
   has(data) {
-    
+    return this._hasElementInside(this.root, data)
   }
 
   find(data) {
