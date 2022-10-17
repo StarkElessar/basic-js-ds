@@ -7,40 +7,81 @@ const { NotImplementedError } = require('../extensions/index.js');
 * using Node from extensions
 */
 class BinarySearchTree {
+  root = null
+
+  constructor() {
+    this.root = null
+  }
+
+  _createObject(data) {
+    return {
+      data,
+      left: null,
+      right: null
+    }
+  }
+
+  _isObject(data) {
+    if (typeof data !== 'object') return false
+    const trueKeys = new Set(Object.keys(data))
+    
+    return trueKeys.has('data') && trueKeys.has('left') && trueKeys.has('right')
+  }
 
   root() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    return this.root !== null ? this.root : null
   }
 
-  add(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  add(data) {
+    if (this.root === null) {
+      this.root = this._isObject(data) ? data : this._createObject(data)
+    } else {
+      const value = this._isObject(data) ? data.data : data
+      let currentHeadValue = this.root
+      let tempValue = null
+
+      while (currentHeadValue !== null) {
+        tempValue = currentHeadValue
+
+        if (value > currentHeadValue.data) {
+          currentHeadValue = currentHeadValue.right
+        } else if (value < currentHeadValue.data) {
+          currentHeadValue = currentHeadValue.left
+        } else {
+          return
+        }
+      }
+
+      if (value === data) {
+        value >= tempValue.data
+          ? tempValue.right = this._createObject(data)
+          : tempValue.left = this._createObject(data)
+      } else {
+        value >= tempValue.data
+          ? tempValue.right = data
+          : tempValue.left = data
+      }
+    }
   }
 
-  has(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  has(data) {
+    
   }
 
-  find(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  find(data) {
+    
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  remove(data) {
+    
   }
 
   min() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    
   }
 
   max() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    
   }
 }
 
