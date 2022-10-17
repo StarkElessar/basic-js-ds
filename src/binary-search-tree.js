@@ -49,8 +49,8 @@ class BinarySearchTree {
     if (node.data === data) return node
 
     return data < node.data
-      ? _findElement(node.left, data)
-      : _findElement(node.right, data)
+      ? this._findElement(node.left, data)
+      : this._findElement(node.right, data)
   }
 
   root() {
@@ -59,21 +59,57 @@ class BinarySearchTree {
   add(data) {
     this.root = this._addElement(this.root, data)
   }
-
   has(data) {
     return this._hasElementInside(this.root, data)
   }
-
   find(data) {
     return this._findElement(this.root, data)
   }
 
-  remove(data) {}
+  remove(data) {
+    this.root = removeNode(this.root, data)
+
+    function removeNode(node, data) {
+      if (!node) return null
+
+      if (data < node.data) {
+        node.left = removeNode(node.left, data)
+
+        return node
+      } else if (node.data < data) {
+        node.right = removeNode(node.right, data)
+
+        return node
+      } else {
+        if (!node.left && !node.right) return null
+
+        if (!node.left) {
+          node = node.right
+          return node
+        }
+
+        if (!node.right) {
+          node = node.left
+          return node
+        }
+
+        let minFromRight = node.right
+        while (minFromRight.left) {
+          minFromRight = minFromRight.left
+        }
+
+        node.data = minFromRight.data
+        node.right = removeNode(node.right, minFromRight.data)
+
+        return node
+      }
+    }
+  }
 
   min() {
-    if (!this._root) return
+    if (!this.root) return
 
-    let node = this._root
+    let node = this.root
 
     while (node.left) {
       node = node.left
@@ -81,11 +117,10 @@ class BinarySearchTree {
 
     return node.data
   }
-
   max() {
-    if (!this._root) return
+    if (!this.root) return
 
-    let node = this._root
+    let node = this.root
 
     while (node.right) {
       node = node.right
