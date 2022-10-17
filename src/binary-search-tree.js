@@ -1,6 +1,6 @@
 const { NotImplementedError } = require('../extensions/index.js');
 
-// const { Node } = require('../extensions/list-tree.js');
+const { Node } = require('../extensions/list-tree.js');
 
 /**
 * Implement simple binary search tree according to task description
@@ -12,7 +12,7 @@ class BinarySearchTree {
   constructor() {
     this.root = null
   }
-
+  // public methods
   _createObject(data) {
     return {
       data,
@@ -20,48 +20,29 @@ class BinarySearchTree {
       right: null
     }
   }
-
   _isObject(data) {
     if (typeof data !== 'object') return false
     const trueKeys = new Set(Object.keys(data))
     
     return trueKeys.has('data') && trueKeys.has('left') && trueKeys.has('right')
   }
+  _addElement(node = this.root, data) {
+    if (!node) return new Node(data)
+    if (node.data === data) return node
+
+    data < node.data
+      ? node.left = this._addElement(node.left, data)
+      : node.right = this._addElement(node.right, data)
+        
+    return node
+  }
 
   root() {
-    return this.root !== null ? this.root : null
+    return this.root
   }
 
   add(data) {
-    if (this.root === null) {
-      this.root = this._isObject(data) ? data : this._createObject(data)
-    } else {
-      const value = this._isObject(data) ? data.data : data
-      let currentHeadValue = this.root
-      let tempValue = null
-
-      while (currentHeadValue !== null) {
-        tempValue = currentHeadValue
-
-        if (value > currentHeadValue.data) {
-          currentHeadValue = currentHeadValue.right
-        } else if (value < currentHeadValue.data) {
-          currentHeadValue = currentHeadValue.left
-        } else {
-          return
-        }
-      }
-
-      if (value === data) {
-        value >= tempValue.data
-          ? tempValue.right = this._createObject(data)
-          : tempValue.left = this._createObject(data)
-      } else {
-        value >= tempValue.data
-          ? tempValue.right = data
-          : tempValue.left = data
-      }
-    }
+    this.root = this._addElement(this.root, data)
   }
 
   has(data) {
