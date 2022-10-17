@@ -20,15 +20,37 @@ class Queue {
   }
   
   getUnderlyingList() {
+    if (!this.firstElement) return null
     
+    return this.firstElement
   }
-
+  
   enqueue(value) {
+    const listNode = new ListNode(value)
     
+    if (!this.firstElement) {
+      this.firstElement = listNode
+      this.lastElement = listNode
+    } else {
+      this.lastElement.next = listNode
+      this.lastElement = listNode
+    }
   }
 
   dequeue() {
-    
+    if (!this.firstElement) {
+      return null;
+    }
+
+    const temp = this.firstElement;
+
+    if (this.firstElement === this.lastElement) {
+      this.lastElement == null;
+    }
+
+    this.firstElement = this.firstElement.next;
+
+    return temp.value;
   }
 }
 
