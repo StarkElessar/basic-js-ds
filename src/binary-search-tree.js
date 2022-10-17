@@ -7,52 +7,54 @@ const { Node } = require('../extensions/list-tree.js')
  * using Node from extensions
  */
 class BinarySearchTree {
+  ROOT = null
   constructor() {
-    this.root = null
+    this.ROOT = null
   }
   // public methods:
-  _addElement(node, data) {
-    if (!node) return new Node(data)
-    if (node.data === data) return node
-
-    data < node.data
-      ? (node.left = this._addElement(node.left, data))
-      : (node.right = this._addElement(node.right, data))
-
-    return node
-  }
-  _hasElementInside(node, data) {
-    if (!node) return false
-    if (node.data === data) return true
-
-    return data < node.data
-      ? this._hasElementInside(node.left, data)
-      : this._hasElementInside(node.right, data)
-  }
-  _findElement(node, data) {
-    if (!node) return null
-    if (node.data === data) return node
-
-    return data < node.data
-      ? this._findElement(node.left, data)
-      : this._findElement(node.right, data)
-  }
-
   root() {
-    return this.root
+    return this.ROOT !== null ? this.ROOT : null
   }
   add(data) {
-    this.root = this._addElement(this.root, data)
+    this.ROOT = addElement(this.ROOT, data)
+
+    function addElement(node, data) {
+      if (!node) return new Node(data)
+      if (node.data === data) return node
+  
+      data < node.data
+        ? (node.left = addElement(node.left, data))
+        : (node.right = addElement(node.right, data))
+  
+      return node
+    }
   }
   has(data) {
-    return this._hasElementInside(this.root, data)
+    return searchElementInside(this.ROOT, data)
+
+    function searchElementInside(node, data) {
+      if (!node) return false
+      if (node.data === data) return true
+  
+      return data < node.data
+        ? searchElementInside(node.left, data)
+        : searchElementInside(node.right, data)
+    }
   }
   find(data) {
-    return this._findElement(this.root, data)
-  }
+    return findElement(this.ROOT, data)
 
+    function findElement(node, data) {
+      if (!node) return null
+      if (node.data === data) return node
+  
+      return data < node.data
+        ? findElement(node.left, data)
+        : findElement(node.right, data)
+    }
+  }
   remove(data) {
-    this.root = removeNode(this.root, data)
+    this.ROOT = removeNode(this.ROOT, data)
 
     function removeNode(node, data) {
       if (!node) return null
@@ -90,11 +92,10 @@ class BinarySearchTree {
       }
     }
   }
-
   min() {
-    if (!this.root) return
+    if (!this.ROOT) return
 
-    let node = this.root
+    let node = this.ROOT
 
     while (node.left) {
       node = node.left
@@ -103,9 +104,9 @@ class BinarySearchTree {
     return node.data
   }
   max() {
-    if (!this.root) return
+    if (!this.ROOT) return
 
-    let node = this.root
+    let node = this.ROOT
 
     while (node.right) {
       node = node.right
